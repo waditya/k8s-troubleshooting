@@ -135,3 +135,28 @@ Allocated resources:
   hugepages-2Mi      0 (0%)    0 (0%)
 Events:              <none>
 ```
+
+## kubectl events
+
+```shell
+student-node ~ ➜  kubectl get events -n default  
+```
+
+The output will look like : 
+
+```   
+LAST SEEN   TYPE     REASON              OBJECT                        MESSAGE
+32m         Normal   ScalingReplicaSet   deployment/web-01             Scaled up replica set web-01-8f4bd4c77 to 2
+32m         Normal   SuccessfulCreate    replicaset/web-01-8f4bd4c77   Created pod: web-01-8f4bd4c77-hh75m
+32m         Normal   SuccessfulCreate    replicaset/web-01-8f4bd4c77   Created pod: web-01-8f4bd4c77-tl6pp
+32m         Normal   Scheduled           pod/web-01-8f4bd4c77-hh75m    Successfully assigned default/web-01-8f4bd4c77-hh75m to cluster1-node01
+32m         Normal   Scheduled           pod/web-01-8f4bd4c77-tl6pp    Successfully assigned default/web-01-8f4bd4c77-tl6pp to cluster1-node02
+32m         Normal   Pulling             pod/web-01-8f4bd4c77-hh75m    Pulling image "nginx:latest"
+32m         Normal   Pulling             pod/web-01-8f4bd4c77-tl6pp    Pulling image "nginx:latest"
+32m         Normal   Pulled              pod/web-01-8f4bd4c77-hh75m    Successfully pulled image "nginx:latest" in 6.898s (6.898s including waiting). Image size: 72950530 bytes.
+32m         Normal   Created             pod/web-01-8f4bd4c77-hh75m    Created container nginx
+32m         Normal   Pulled              pod/web-01-8f4bd4c77-tl6pp    Successfully pulled image "nginx:latest" in 6.961s (6.961s including waiting). Image size: 72950530 bytes.
+32m         Normal   Created             pod/web-01-8f4bd4c77-tl6pp    Created container nginx
+32m         Normal   Started             pod/web-01-8f4bd4c77-hh75m    Started container nginx
+32m         Normal   Started             pod/web-01-8f4bd4c77-tl6pp    Started container nginx
+```
