@@ -10,3 +10,6 @@
 <span style="color:green">&rarr;</span>  diff  
 <span style="color:green">&rarr;</span>  auth-can-i
 
+## kubectl get 
+
+```k get -n uat deployment my-deployment -o=jsonpath='{.spec.replicas}'```
