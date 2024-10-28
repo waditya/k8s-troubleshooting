@@ -12,13 +12,13 @@
 
 ## kubectl get 
 
-```student-node ~ ➜  k create deployment web-01 --image=nginx:latest --replicas=2
-deployment.apps/web-01 created```
+```student-node ~ ➜  k create deployment web-01 --image=nginx:latest --replicas=2```
+deployment.apps/web-01 created
 
-```student-node ~ ➜  k get pods
+```student-node ~ ➜  k get pods``
 NAME                     READY   STATUS              RESTARTS   AGE
 web-01-8f4bd4c77-hh75m   0/1     ContainerCreating   0          9s
 web-01-8f4bd4c77-tl6pp   0/1     ContainerCreating   0          9s```
 
 ```k get -n default deployment web-01 -o=jsonpath='{.spec.replicas}'```
-```2```
+2
