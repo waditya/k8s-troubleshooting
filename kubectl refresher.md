@@ -12,9 +12,12 @@
 
 ## kubectl get 
 
-```shell 
-student-node ~ ➜  k create deployment web-01 --image=nginx:latest --replicas=2```      
-deployment.apps/web-01 created
+```shell
+student-node ~ ➜  k create deployment web-01 --image=nginx:latest --replicas=2
+```
+```      
+deployment.apps/web-01 created   
+```
 
 ```shell
 student-node ~ ➜  k get pods   
