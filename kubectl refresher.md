@@ -25,3 +25,15 @@ web-01-8f4bd4c77-tl6pp   0/1     ContainerCreating   0          9s```
 
 ```student-node ~ ➜  k get -n default pod web-01-8f4bd4c77-tl6pp -o=jsonpath='{.status.podIP}'```  
 10.42.2.3
+
+## kubectl describe 
+
+```shell
+student-node ~ ➜  k get nodes
+```  
+```  
+NAME                    STATUS   ROLES                  AGE     VERSION
+cluster1-node01         Ready    <none>                 3h52m   v1.30.0+k3s1
+cluster1-node02         Ready    <none>                 3h52m   v1.30.0+k3s1
+cluster1-controlplane   Ready    control-plane,master   3h52m   v1.30.0+k3s1
+```   
