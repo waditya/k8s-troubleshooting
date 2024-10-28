@@ -22,3 +22,6 @@ web-01-8f4bd4c77-tl6pp   0/1     ContainerCreating   0          9s```
 
 ```k get -n default deployment web-01 -o=jsonpath='{.spec.replicas}'```
 2
+
+```student-node ~ ➜  k get -n default pod web-01-8f4bd4c77-tl6pp -o=jsonpath='{.status.podIP}'```
+10.42.2.3
