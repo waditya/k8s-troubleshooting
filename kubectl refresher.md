@@ -15,7 +15,8 @@
 ```shell
 student-node ~ ➜  k create deployment web-01 --image=nginx:latest --replicas=2
 ```
-```      
+The output will look like below : 
+```  
 deployment.apps/web-01 created   
 ```
 
@@ -28,11 +29,20 @@ web-01-8f4bd4c77-hh75m   0/1     ContainerCreating   0          9s
 web-01-8f4bd4c77-tl6pp   0/1     ContainerCreating   0          9s
 ```
 
-```k get -n default deployment web-01 -o=jsonpath='{.spec.replicas}'```  
+```shell
+k get -n default deployment web-01 -o=jsonpath='{.spec.replicas}'
+```  
+```
 2
+```
 
-```student-node ~ ➜  k get -n default pod web-01-8f4bd4c77-tl6pp -o=jsonpath='{.status.podIP}'```  
+```shell
+student-node ~ ➜  k get -n default pod web-01-8f4bd4c77-tl6pp -o=jsonpath='{.status.podIP}'
+```  
+The output will look like : 
+```   
 10.42.2.3
+```
 
 ## kubectl describe 
 
