@@ -772,7 +772,8 @@ drwxr-xr-x 1 root root      4096 Nov 12 02:03  .
 
 ## kubectl port-forward 
 
-This is used to forward traffic from local port to a remote port 
+This is used to forward traffic from local port to a remote port.
+This can be used to access services not exposed on internet or to debug services.
 
 ```shell
 controlplane ~ ➜  k get svc
