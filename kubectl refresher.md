@@ -272,3 +272,6 @@ App is running on port 3000
 
 App is running on port 3000
 ```
+
+## kubectl logs --timestamps 
+
