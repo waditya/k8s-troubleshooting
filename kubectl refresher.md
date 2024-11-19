@@ -768,3 +768,126 @@ lrwxrwxrwx 1 root root        27 Nov  1 12:42  ld.so -> /lib64/ld-linux-x86-64.s
 drwxr-xr-x 1 root root      4096 Nov 11 00:00  ..
 drwxr-xr-x 1 root root      4096 Nov 12 02:03  .
 ```
+
+
+## kubectl port-forward 
+
+This is used to forward traffic from local port to a remote port 
+
+```shell
+controlplane ~ ➜  k get svc
+
+NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   99m
+
+controlplane ~ ➜  k get svc -o yaml
+
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2024-11-19T16:31:02Z"
+    labels:
+      component: apiserver
+      provider: kubernetes
+    name: kubernetes
+    namespace: default
+    resourceVersion: "234"
+    uid: d62012c3-8d05-4aaa-adb5-213132ad2792
+  spec:
+    clusterIP: 10.96.0.1
+    clusterIPs:
+    - 10.96.0.1
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: https
+      port: 443
+      protocol: TCP
+      targetPort: 6443
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+kind: List
+metadata:
+  resourceVersion: ""
+  ```
+
+  ```shell
+controlplane ~ ➜  curl -IL http://10.109.185.39:80
+
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Content-Type: text/html; charset=utf-8
+Content-Length: 1032
+ETag: W/"408-qZoCxCBllOwneE5XEkaFaesRwUs"
+Date: Tue, 19 Nov 2024 18:23:32 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+```
+
+```bash
+controlplane ~ ➜  k port-forward -n uat svc/notes-app-svc 8000:80
+
+Forwarding from 127.0.0.1:8000 -> 3000
+Handling connection for 8000
+Handling connection for 8000
+Handling connection for 8000
+Handling connection for 8000
+Handling connection for 8000
+```
+
+On a seperate terminal tab, run below command : 
+
+```bash 
+controlplane ~ ✖ curl -IL localhost:8000
+
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Content-Type: text/html; charset=utf-8
+Content-Length: 1032
+ETag: W/"408-qZoCxCBllOwneE5XEkaFaesRwUs"
+Date: Tue, 19 Nov 2024 18:25:42 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+
+controlplane ~ ➜  curl -IL localhost:8000
+
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Content-Type: text/html; charset=utf-8
+Content-Length: 1032
+ETag: W/"408-qZoCxCBllOwneE5XEkaFaesRwUs"
+Date: Tue, 19 Nov 2024 18:39:03 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+
+controlplane ~ ➜  curl -IL localhost:8000
+
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Content-Type: text/html; charset=utf-8
+Content-Length: 1032
+ETag: W/"408-qZoCxCBllOwneE5XEkaFaesRwUs"
+Date: Tue, 19 Nov 2024 18:39:04 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+
+controlplane ~ ➜  curl -IL localhost:8000
+
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Content-Type: text/html; charset=utf-8
+Content-Length: 1032
+ETag: W/"408-qZoCxCBllOwneE5XEkaFaesRwUs"
+Date: Tue, 19 Nov 2024 18:39:05 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+```
