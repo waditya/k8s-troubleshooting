@@ -358,3 +358,26 @@ Logs for last 20 seconds
 2024-11-19T17:09:29+0000 WARN A warning that should be ignored is usually at this level and should be actionable.
 2024-11-19T17:09:34+0000 ERROR An error is usually an exception that has been caught and not handled.
 ```
+```bash
+controlplane ~ ➜  k logs log-generator --since=1h
+```
+
+Logs for last 1 hour 
+
+```
+2024-11-19T17:08:53+0000 INFO This is less important than debug log and is often used to provide context in the current task.
+2024-11-19T17:08:54+0000 DEBUG This is a debug log that shows a log that can be ignored.
+2024-11-19T17:08:55+0000 WARN A warning that should be ignored is usually at this level and should be actionable.
+2024-11-19T17:08:58+0000 WARN A warning that should be ignored is usually at this level and should be actionable.
+2024-11-19T17:09:01+0000 INFO This is less important than debug log and is often used to provide context in the current task.
+2024-11-19T17:09:02+0000 ERROR An error is usually an exception that has been caught and not handled.
+2024-11-19T17:09:03+0000 DEBUG This is a debug log that shows a log that can be ignored.
+2024-11-19T17:09:06+0000 DEBUG This is a debug log that shows a log that can be ignored.
+.
+.
+.
+2024-11-19T17:28:57+0000 WARN A warning that should be ignored is usually at this level and should be actionable.
+2024-11-19T17:29:02+0000 DEBUG This is a debug log that shows a log that can be ignored.
+2024-11-19T17:29:05+0000 ERROR An error is usually an exception that has been caught and not handled.
+2024-11-19T17:29:06+0000 INFO This is less important than debug log and is often used to provide context in the current task.
+```
