@@ -311,3 +311,50 @@ Output with --timestamps option will display timestamp if they are not part of d
 2024-11-19T15:50:15.170372285Z 
 2024-11-19T15:50:15.487163498Z App is running on port 3000
 ```
+
+## kubectl logs --since 
+
+```shell
+controlplane ~ ➜  k run log-generator --image=chentex/random-logger:latest
+```
+
+Pod is created using the log generator image chentex/random-logger:latest
+```
+pod/log-generator created
+```
+
+```shell
+controlplane ~ ➜  k get pods
+```
+Pod is running now 
+
+```
+NAME            READY   STATUS    RESTARTS   AGE
+log-generator   1/1     Running   0          3s
+```
+
+```shell
+controlplane ~ ➜  k logs log-generator --since=5s
+```
+
+Logs for last 5 seconds are seen in the container 
+
+```
+2024-11-19T17:09:19+0000 WARN A warning that should be ignored is usually at this level and should be actionable.
+2024-11-19T17:09:21+0000 ERROR An error is usually an exception that has been caught and not handled.
+```
+
+```shell
+controlplane ~ ➜  k logs log-generator --since=20s
+```
+Logs for last 20 seconds
+
+```
+2024-11-19T17:09:14+0000 ERROR An error is usually an exception that has been caught and not handled.
+2024-11-19T17:09:19+0000 WARN A warning that should be ignored is usually at this level and should be actionable.
+2024-11-19T17:09:21+0000 ERROR An error is usually an exception that has been caught and not handled.
+2024-11-19T17:09:24+0000 ERROR An error is usually an exception that has been caught and not handled.
+2024-11-19T17:09:28+0000 DEBUG This is a debug log that shows a log that can be ignored.
+2024-11-19T17:09:29+0000 WARN A warning that should be ignored is usually at this level and should be actionable.
+2024-11-19T17:09:34+0000 ERROR An error is usually an exception that has been caught and not handled.
+```
