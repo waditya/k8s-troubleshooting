@@ -404,3 +404,367 @@ controlplane ~ ➜  k logs log-generator --follow
 
 This command is similar to docker exec. It allows to run a command inside a running container. 
 
+```shell
+controlplane ~ ➜  k run nginx --image=nginx
+
+pod/nginx created
+```
+
+### List the contents in the container 
+
+```shell
+controlplane ~ ➜  k exec nginx -- ls
+
+bin
+boot
+dev
+docker-entrypoint.d
+docker-entrypoint.sh
+etc
+home
+lib
+lib64
+media
+mnt
+opt
+proc
+root
+run
+sbin
+srv
+sys
+tmp
+usr
+var
+```
+### View the content of a file inside the container 
+
+```shell
+controlplane ~ ➜  k exec nginx -- cat /usr/share/nginx/html/index.html
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+```
+
+### Get an interactive shell
+
+```bash
+controlplane ~ ➜  k exec -i -t nginx -- /bin/sh
+# ls
+
+bin   dev                  docker-entrypoint.sh  home  lib64  mnt  proc  run   srv  tmp  var
+boot  docker-entrypoint.d  etc                   lib   media  opt  root  sbin  sys  usr
+
+# 
+# cd bin
+# 
+# ls -lart
+
+total 27376
+-rwxr-xr-x 1 root root        30 Jan 29  2020  rgrep
+-rwxr-xr-x 1 root root      4577 Apr 10  2022  znew
+-rwxr-xr-x 1 root root      1842 Apr 10  2022  zmore
+-rwxr-xr-x 1 root root      2206 Apr 10  2022  zless
+-rwxr-xr-x 1 root root      8103 Apr 10  2022  zgrep
+-rwxr-xr-x 1 root root      2081 Apr 10  2022  zforce
+-rwxr-xr-x 1 root root        29 Apr 10  2022  zfgrep
+-rwxr-xr-x 1 root root        29 Apr 10  2022  zegrep
+-rwxr-xr-x 1 root root      6460 Apr 10  2022  zdiff
+-rwxr-xr-x 1 root root      1678 Apr 10  2022  zcmp
+-rwxr-xr-x 1 root root      1984 Apr 10  2022  zcat
+-rwxr-xr-x 2 root root      2346 Apr 10  2022  uncompress
+-rwxr-xr-x 1 root root     98136 Apr 10  2022  gzip
+-rwxr-xr-x 1 root root      6447 Apr 10  2022  gzexe
+-rwxr-xr-x 2 root root      2346 Apr 10  2022  gunzip
+lrwxrwxrwx 1 root root        22 Jun 17  2022  nawk -> /etc/alternatives/nawk
+-rwxr-xr-x 1 root root    158376 Jun 17  2022  mawk
+lrwxrwxrwx 1 root root        21 Jun 17  2022  awk -> /etc/alternatives/awk
+-rwxr-xr-x 1 root root      6241 Jul  2  2022  deb-systemd-invoke
+-rwxr-xr-x 1 root root     24358 Jul  9  2022  deb-systemd-helper
+-rwxr-xr-x 1 root root     39760 Sep 20  2022  yes
+-rwxr-xr-x 1 root root     39792 Sep 20  2022  whoami
+-rwxr-xr-x 1 root root     60432 Sep 20  2022  who
+-rwxr-xr-x 1 root root     52280 Sep 20  2022  wc
+-rwxr-xr-x 1 root root    151344 Sep 20  2022  vdir
+-rwxr-xr-x 1 root root     39824 Sep 20  2022  users
+-rwxr-xr-x 1 root root     39760 Sep 20  2022  unlink
+-rwxr-xr-x 1 root root     48080 Sep 20  2022  uniq
+-rwxr-xr-x 1 root root     43952 Sep 20  2022  unexpand
+-rwxr-xr-x 1 root root     43888 Sep 20  2022  uname
+-rwxr-xr-x 1 root root     35696 Sep 20  2022  tty
+-rwxr-xr-x 1 root root     56208 Sep 20  2022  tsort
+-rwxr-xr-x 1 root root     43920 Sep 20  2022  truncate
+-rwxr-xr-x 1 root root     35664 Sep 20  2022  true
+-rwxr-xr-x 1 root root     56208 Sep 20  2022  tr
+-rwxr-xr-x 1 root root    109616 Sep 20  2022  touch
+-rwxr-xr-x 1 root root     48632 Sep 20  2022  timeout
+-rwxr-xr-x 1 root root     60304 Sep 20  2022  test
+-rwxr-xr-x 1 root root     43984 Sep 20  2022  tee
+-rwxr-xr-x 1 root root     76944 Sep 20  2022  tail
+-rwxr-xr-x 1 root root    113712 Sep 20  2022  tac
+-rwxr-xr-x 1 root root     39824 Sep 20  2022  sync
+-rwxr-xr-x 1 root root     52184 Sep 20  2022  sum
+-rwxr-xr-x 1 root root     85008 Sep 20  2022  stty
+-rwxr-xr-x 1 root root     60336 Sep 20  2022  stdbuf
+-rwxr-xr-x 1 root root     97488 Sep 20  2022  stat
+-rwxr-xr-x 1 root root     60984 Sep 20  2022  split
+-rwxr-xr-x 1 root root    118456 Sep 20  2022  sort
+-rwxr-xr-x 1 root root     43888 Sep 20  2022  sleep
+-rwxr-xr-x 1 root root     60400 Sep 20  2022  shuf
+-rwxr-xr-x 1 root root     64656 Sep 20  2022  shred
+-rwxr-xr-x 1 root root     64464 Sep 20  2022  sha512sum
+-rwxr-xr-x 1 root root     64464 Sep 20  2022  sha384sum
+-rwxr-xr-x 1 root root     60368 Sep 20  2022  sha256sum
+-rwxr-xr-x 1 root root     60368 Sep 20  2022  sha224sum
+-rwxr-xr-x 1 root root     56272 Sep 20  2022  sha1sum
+-rwxr-xr-x 1 root root     60336 Sep 20  2022  seq
+-rwxr-xr-x 1 root root     43984 Sep 20  2022  runcon
+-rwxr-xr-x 1 root root     56240 Sep 20  2022  rmdir
+-rwxr-xr-x 1 root root     72752 Sep 20  2022  rm
+-rwxr-xr-x 1 root root     52144 Sep 20  2022  realpath
+-rwxr-xr-x 1 root root     52112 Sep 20  2022  readlink
+-rwxr-xr-x 1 root root     43952 Sep 20  2022  pwd
+-rwxr-xr-x 1 root root    138480 Sep 20  2022  ptx
+-rwxr-xr-x 1 root root     64432 Sep 20  2022  printf
+-rwxr-xr-x 1 root root     35664 Sep 20  2022  printenv
+-rwxr-xr-x 1 root root     81008 Sep 20  2022  pr
+-rwxr-xr-x 1 root root     48176 Sep 20  2022  pinky
+-rwxr-xr-x 1 root root     43888 Sep 20  2022  pathchk
+-rwxr-xr-x 1 root root     43920 Sep 20  2022  paste
+-rwxr-xr-x 1 root root     80912 Sep 20  2022  od
+-rwxr-xr-x 1 root root     68624 Sep 20  2022  numfmt
+-rwxr-xr-x 1 root root     43920 Sep 20  2022  nproc
+-rwxr-xr-x 1 root root     43920 Sep 20  2022  nohup
+-rwxr-xr-x 1 root root    113776 Sep 20  2022  nl
+-rwxr-xr-x 1 root root     43888 Sep 20  2022  nice
+-rwxr-xr-x 1 root root    142968 Sep 20  2022  mv
+-rwxr-xr-x 1 root root     43952 Sep 20  2022  mktemp
+-rwxr-xr-x 1 root root     72912 Sep 20  2022  mknod
+-rwxr-xr-x 1 root root     68784 Sep 20  2022  mkfifo
+-rwxr-xr-x 1 root root     97552 Sep 20  2022  mkdir
+lrwxrwxrwx 1 root root         6 Sep 20  2022  md5sum.textutils -> md5sum
+-rwxr-xr-x 1 root root     52176 Sep 20  2022  md5sum
+-rwxr-xr-x 1 root root    151344 Sep 20  2022  ls
+-rwxr-xr-x 1 root root     39760 Sep 20  2022  logname
+-rwxr-xr-x 1 root root     72824 Sep 20  2022  ln
+-rwxr-xr-x 1 root root     39760 Sep 20  2022  link
+-rwxr-xr-x 1 root root     56304 Sep 20  2022  join
+-rwxr-xr-x 1 root root    159544 Sep 20  2022  install
+-rwxr-xr-x 1 root root     48144 Sep 20  2022  id
+-rwxr-xr-x 1 root root     39760 Sep 20  2022  hostid
+-rwxr-xr-x 1 root root     48080 Sep 20  2022  head
+-rwxr-xr-x 1 root root     43920 Sep 20  2022  groups
+-rwxr-xr-x 1 root root     43920 Sep 20  2022  fold
+-rwxr-xr-x 1 root root     48016 Sep 20  2022  fmt
+-rwxr-xr-x 1 root root     35664 Sep 20  2022  false
+-rwxr-xr-x 1 root root     85200 Sep 20  2022  factor
+-rwxr-xr-x 1 root root    117808 Sep 20  2022  expr
+-rwxr-xr-x 1 root root     43952 Sep 20  2022  expand
+-rwxr-xr-x 1 root root     48536 Sep 20  2022  env
+-rwxr-xr-x 1 root root     43856 Sep 20  2022  echo
+-rwxr-xr-x 1 root root    175440 Sep 20  2022  du
+-rwxr-xr-x 1 root root     39760 Sep 20  2022  dirname
+-rwxr-xr-x 1 root root     52144 Sep 20  2022  dircolors
+-rwxr-xr-x 1 root root    151344 Sep 20  2022  dir
+-rwxr-xr-x 1 root root    102200 Sep 20  2022  df
+-rwxr-xr-x 1 root root     89240 Sep 20  2022  dd
+-rwxr-xr-x 1 root root    121904 Sep 20  2022  date
+-rwxr-xr-x 1 root root     48112 Sep 20  2022  cut
+-rwxr-xr-x 1 root root    122032 Sep 20  2022  csplit
+-rwxr-xr-x 1 root root    151152 Sep 20  2022  cp
+-rwxr-xr-x 1 root root     48048 Sep 20  2022  comm
+-rwxr-xr-x 1 root root    142384 Sep 20  2022  cksum
+-rwxr-xr-x 1 root root     72752 Sep 20  2022  chown
+-rwxr-xr-x 1 root root     64496 Sep 20  2022  chmod
+-rwxr-xr-x 1 root root     68656 Sep 20  2022  chgrp
+-rwxr-xr-x 1 root root     68720 Sep 20  2022  chcon
+-rwxr-xr-x 1 root root     44016 Sep 20  2022  cat
+-rwxr-xr-x 1 root root     56208 Sep 20  2022  basenc
+-rwxr-xr-x 1 root root     43856 Sep 20  2022  basename
+-rwxr-xr-x 1 root root     48016 Sep 20  2022  base64
+-rwxr-xr-x 1 root root     48016 Sep 20  2022  base32
+-rwxr-xr-x 1 root root     60400 Sep 20  2022  b2sum
+-rwxr-xr-x 1 root root     43888 Sep 20  2022  arch
+-rwxr-xr-x 1 root root     68496 Sep 20  2022 '['
+lrwxrwxrwx 1 root root         8 Dec 19  2022  ypdomainname -> hostname
+lrwxrwxrwx 1 root root         8 Dec 19  2022  nisdomainname -> hostname
+-rwxr-xr-x 1 root root     22680 Dec 19  2022  hostname
+lrwxrwxrwx 1 root root         8 Dec 19  2022  domainname -> hostname
+lrwxrwxrwx 1 root root         8 Dec 19  2022  dnsdomainname -> hostname
+lrwxrwxrwx 1 root root         4 Jan  5  2023  sh -> dash
+-rwxr-xr-x 1 root root    125640 Jan  5  2023  dash
+-rwxr-xr-x 1 root root    126424 Jan  5  2023  sed
+-rwxr-xr-x 1 root root     72136 Jan  8  2023  xargs
+-rwxr-xr-x 1 root root    224848 Jan  8  2023  find
+-rwxr-xr-x 1 root root      1827 Jan  8  2023  debconf-show
+-rwxr-xr-x 1 root root      2995 Jan  8  2023  debconf-set-selections
+-rwxr-xr-x 1 root root       647 Jan  8  2023  debconf-escape
+-rwxr-xr-x 1 root root      1719 Jan  8  2023  debconf-copydb
+-rwxr-xr-x 1 root root       608 Jan  8  2023  debconf-communicate
+-rwxr-xr-x 1 root root     11541 Jan  8  2023  debconf-apt-progress
+-rwxr-xr-x 1 root root      2859 Jan  8  2023  debconf
+-rwxr-xr-x 1 root root    203152 Jan 24  2023  grep
+-rwxr-xr-x 1 root root        41 Jan 24  2023  fgrep
+-rwxr-xr-x 1 root root        41 Jan 24  2023  egrep
+-rwxr-xr-x 1 root root     56400 Feb  3  2023  sdiff
+-rwxr-xr-x 1 root root     68752 Feb  3  2023  diff3
+-rwxr-xr-x 1 root root    155216 Feb  3  2023  diff
+-rwxr-xr-x 1 root root     52176 Feb  3  2023  cmp
+-rwxr-xr-x 1 root root     35136 Feb 26  2023  ngettext
+-rwxr-xr-x 1 root root      5188 Feb 26  2023  gettext.sh
+-rwxr-xr-x 1 root root     35136 Feb 26  2023  gettext
+-rwxr-xr-x 1 root root     35136 Feb 26  2023  envsubst
+-rwxr-xr-x 1 root root     14584 Mar  5  2023  lsattr
+-rwxr-xr-x 1 root root     14584 Mar  5  2023  chattr
+lrwxrwxrwx 1 root root         6 Mar 23  2023  sg -> newgrp
+-rwsr-xr-x 1 root root     68248 Mar 23  2023  passwd
+-rwsr-xr-x 1 root root     48896 Mar 23  2023  newgrp
+-rwxr-xr-x 1 root root     53024 Mar 23  2023  login
+-rwxr-xr-x 1 root root     32512 Mar 23  2023  lastlog
+-rwsr-xr-x 1 root root     88496 Mar 23  2023  gpasswd
+-rwxr-xr-x 1 root root     23072 Mar 23  2023  faillog
+-rwxr-sr-x 1 root shadow   31184 Mar 23  2023  expiry
+-rwsr-xr-x 1 root root     52880 Mar 23  2023  chsh
+-rwsr-xr-x 1 root root     62672 Mar 23  2023  chfn
+-rwxr-sr-x 1 root shadow   80376 Mar 23  2023  chage
+-rwxr-xr-x 1 root root    474112 Mar 26  2023  gpgv
+lrwxrwxrwx 1 root root        14 Apr  3  2023  pidof -> /sbin/killall5
+-rwxr-xr-x 1 root root     30968 May  7  2023  tset
+-rwxr-xr-x 1 root root     26896 May  7  2023  tput
+-rwxr-xr-x 1 root root     22768 May  7  2023  toe
+-rwxr-xr-x 1 root root     92512 May  7  2023  tic
+-rwxr-xr-x 1 root root     18672 May  7  2023  tabs
+lrwxrwxrwx 1 root root         4 May  7  2023  reset -> tset
+lrwxrwxrwx 1 root root         3 May  7  2023  infotocap -> tic
+-rwxr-xr-x 1 root root     63808 May  7  2023  infocmp
+-rwxr-xr-x 1 root root     14584 May  7  2023  clear
+lrwxrwxrwx 1 root root         3 May  7  2023  captoinfo -> tic
+-rwxr-xr-x 1 root root     59712 May 11  2023  update-alternatives
+-rwxr-xr-x 1 root root     88560 May 11  2023  dpkg-trigger
+-rwxr-xr-x 1 root root     63824 May 11  2023  dpkg-statoverride
+-rwxr-xr-x 1 root root    129520 May 11  2023  dpkg-split
+-rwxr-xr-x 1 root root      4186 May 11  2023  dpkg-realpath
+-rwxr-xr-x 1 root root    162384 May 11  2023  dpkg-query
+-rwxr-xr-x 1 root root     21206 May 11  2023  dpkg-maintscript-helper
+-rwxr-xr-x 1 root root    158264 May 11  2023  dpkg-divert
+-rwxr-xr-x 1 root root    170512 May 11  2023  dpkg-deb
+-rwxr-xr-x 1 root root    318096 May 11  2023  dpkg
+-rwxr-xr-x 1 root root     59784 May 25  2023  apt-mark
+-rwxr-xr-x 1 root root     27972 May 25  2023  apt-key
+-rwxr-xr-x 1 root root     51592 May 25  2023  apt-get
+-rwxr-xr-x 1 root root     26944 May 25  2023  apt-config
+-rwxr-xr-x 1 root root     22920 May 25  2023  apt-cdrom
+-rwxr-xr-x 1 root root     88456 May 25  2023  apt-cache
+-rwxr-xr-x 1 root root     18752 May 25  2023  apt
+-rwxr-xr-x 1 root root       946 Jul 28  2023  which.debianutils
+lrwxrwxrwx 1 root root        23 Jul 28  2023  which -> /etc/alternatives/which
+-rwxr-xr-x 1 root root     14520 Jul 28  2023  tempfile
+-rwxr-xr-x 1 root root     10487 Jul 28  2023  savelog
+-rwxr-xr-x 1 root root     27560 Jul 28  2023  run-parts
+-rwxr-xr-x 1 root root     14664 Jul 28  2023  ischroot
+-rwxr-xr-x 2 root root   3804432 Nov 25  2023  perl5.36.0
+-rwxr-xr-x 2 root root   3804432 Nov 25  2023  perl
+-rwxr-xr-x 1 root root    531984 Jan 20  2024  tar
+lrwxrwxrwx 1 root root         4 Mar 29  2024  rbash -> bash
+-rwxr-xr-x 1 root root     14488 Mar 29  2024  clear_console
+-rwxr-xr-x 1 root root      6865 Mar 29  2024  bashbug
+-rwxr-xr-x 1 root root   1265648 Mar 29  2024  bash
+-rwxr-xr-x 1 root root    280800 Sep 17 19:29  curl
+-rwxr-xr-x 1 root root   1815512 Oct  2 15:59  njs
+lrwxrwxrwx 1 root root         7 Oct 18 12:56  x86_64 -> setarch
+-rwxr-xr-x 1 root root     31504 Oct 18 12:56  whereis
+-rwxr-xr-x 1 root root     72024 Oct 18 12:56  wdctl
+-rwxr-xr-x 1 root root     39224 Oct 18 12:56  wall
+-rwxr-xr-x 1 root root     31032 Oct 18 12:56  utmpdump
+-rwxr-xr-x 1 root root     84520 Oct 18 12:56  unshare
+-rwsr-xr-x 1 root root     35128 Oct 18 12:56  umount
+-rwxr-xr-x 1 root root     63808 Oct 18 12:56  uclampset
+-rwxr-xr-x 1 root root     63808 Oct 18 12:56  taskset
+-rwsr-xr-x 1 root root     72000 Oct 18 12:56  su
+-rwxr-xr-x 1 root root     47424 Oct 18 12:56  setterm
+-rwxr-xr-x 1 root root     14648 Oct 18 12:56  setsid
+-rwxr-xr-x 1 root root     80192 Oct 18 12:56  setpriv
+-rwxr-xr-x 1 root root     27216 Oct 18 12:56  setarch
+-rwxr-xr-x 1 root root     47416 Oct 18 12:56  scriptreplay
+-rwxr-xr-x 1 root root     55608 Oct 18 12:56  scriptlive
+-rwxr-xr-x 1 root root     71992 Oct 18 12:56  script
+-rwxr-xr-x 1 root root     14648 Oct 18 12:56  rev
+-rwxr-xr-x 1 root root     72000 Oct 18 12:56  resizepart
+-rwxr-xr-x 1 root root     14648 Oct 18 12:56  renice
+-rwxr-xr-x 1 root root     22840 Oct 18 12:56  rename.ul
+-rwxr-xr-x 1 root root     39760 Oct 18 12:56  prlimit
+-rwxr-xr-x 1 root root    121152 Oct 18 12:56  partx
+lrwxrwxrwx 1 root root        23 Oct 18 12:56  pager -> /etc/alternatives/pager
+-rwxr-xr-x 1 root root     35368 Oct 18 12:56  nsenter
+-rwxr-xr-x 1 root root     35136 Oct 18 12:56  namei
+-rwxr-xr-x 1 root root     18744 Oct 18 12:56  mountpoint
+-rwsr-xr-x 1 root root     59704 Oct 18 12:56  mount
+-rwxr-xr-x 1 root root     59712 Oct 18 12:56  more
+-rwxr-xr-x 1 root root     18744 Oct 18 12:56  mesg
+-rwxr-xr-x 1 root root     35200 Oct 18 12:56  mcookie
+-rwxr-xr-x 1 root root     84288 Oct 18 12:56  lsns
+-rwxr-xr-x 1 root root     67904 Oct 18 12:56  lsmem
+-rwxr-xr-x 1 root root     96576 Oct 18 12:56  lslogins
+-rwxr-xr-x 1 root root     72400 Oct 18 12:56  lslocks
+-rwxr-xr-x 1 root root     35312 Oct 18 12:56  lsirq
+-rwxr-xr-x 1 root root    100672 Oct 18 12:56  lsipc
+-rwxr-xr-x 1 root root    123192 Oct 18 12:56  lsfd
+-rwxr-xr-x 1 root root    129344 Oct 18 12:56  lscpu
+-rwxr-xr-x 1 root root    207168 Oct 18 12:56  lsblk
+-rwxr-xr-x 1 root root     56216 Oct 18 12:56  logger
+lrwxrwxrwx 1 root root         7 Oct 18 12:56  linux64 -> setarch
+lrwxrwxrwx 1 root root         7 Oct 18 12:56  linux32 -> setarch
+lrwxrwxrwx 1 root root         4 Oct 18 12:56  lastb -> last
+-rwxr-xr-x 1 root root     51520 Oct 18 12:56  last
+-rwxr-xr-x 1 root root     76096 Oct 18 12:56  ipcs
+-rwxr-xr-x 1 root root     35136 Oct 18 12:56  ipcrm
+-rwxr-xr-x 1 root root     35200 Oct 18 12:56  ipcmk
+-rwxr-xr-x 1 root root     35136 Oct 18 12:56  ionice
+lrwxrwxrwx 1 root root         7 Oct 18 12:56  i386 -> setarch
+-rwxr-xr-x 1 root root     51600 Oct 18 12:56  hardlink
+-rwxr-xr-x 1 root root     35136 Oct 18 12:56  getopt
+-rwxr-xr-x 1 root root     35216 Oct 18 12:56  flock
+-rwxr-xr-x 1 root root     85600 Oct 18 12:56  findmnt
+-rwxr-xr-x 1 root root     35184 Oct 18 12:56  fincore
+-rwxr-xr-x 1 root root     35136 Oct 18 12:56  fallocate
+-rwxr-xr-x 1 root root     88656 Oct 18 12:56  dmesg
+-rwxr-xr-x 1 root root     31040 Oct 18 12:56  delpart
+-rwxr-xr-x 1 root root     67904 Oct 18 12:56  chrt
+-rwxr-xr-x 1 root root     55616 Oct 18 12:56  choom
+-rwxr-xr-x 1 root root     31040 Oct 18 12:56  addpart
+-rwxr-xr-x 1 root root    976136 Oct 27 14:16  openssl
+-rwxr-xr-x 1 root root      6841 Oct 27 14:16  c_rehash
+-rwxr-xr-x 1 root root     23064 Nov  1 12:42  zdump
+-rwxr-xr-x 1 root root     15351 Nov  1 12:42  tzselect
+-rwxr-xr-x 1 root root     23232 Nov  1 12:42  pldd
+-rwxr-xr-x 1 root root    298912 Nov  1 12:42  localedef
+-rwxr-xr-x 1 root root     47272 Nov  1 12:42  locale
+-rwxr-xr-x 1 root root      5406 Nov  1 12:42  ldd
+lrwxrwxrwx 1 root root        27 Nov  1 12:42  ld.so -> /lib64/ld-linux-x86-64.so.2
+-rwxr-xr-x 1 root root     64648 Nov  1 12:42  iconv
+-rwxr-xr-x 1 root root     36320 Nov  1 12:42  getent
+-rwxr-xr-x 1 root root     27136 Nov  1 12:42  getconf
+drwxr-xr-x 1 root root      4096 Nov 11 00:00  ..
+drwxr-xr-x 1 root root      4096 Nov 12 02:03  .
+```
