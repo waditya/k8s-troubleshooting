@@ -892,3 +892,149 @@ Date: Tue, 19 Nov 2024 18:39:05 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 ```
+
+## kubectl auth can-i 
+
+```bash
+controlplane ~ ➜  k auth can-i list pods -n default
+
+yes
+```
+
+```bash
+controlplane ~ ➜  k auth whoami
+
+ATTRIBUTE   VALUE
+Username    kubernetes-admin
+Groups      [kubeadm:cluster-admins system:authenticated]
+```
+```bash
+controlplane ~ ➜  k get roles
+
+No resources found in default namespace.
+```
+```bash
+controlplane ~ ➜  k create role kubernetes-developer --verb=create,get,list --resource="*"
+
+role.rbac.authorization.k8s.io/kubernetes-developer created
+```
+
+```bash
+controlplane ~ ➜  k get roles
+
+NAME                   CREATED AT
+kubernetes-developer   2024-11-19T18:50:24Z
+
+controlplane ~ ➜  k get roles kubernetes-developer -o yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  creationTimestamp: "2024-11-19T18:50:24Z"
+  name: kubernetes-developer
+  namespace: default
+  resourceVersion: "13197"
+  uid: ca41f3ef-ac70-4a08-ba8a-0229fdc82bdc
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - '*'
+  verbs:
+  - create
+  - get
+  - list
+
+controlplane ~ ➜ k create rolebinding k8s-developer-sa-rolebinding --role=kubernetes-developer --serviceaccount=default:k8s-developer
+
+rolebinding.rbac.authorization.k8s.io/k8s-developer-sa-rolebinding created
+
+controlplane ~ ➜  k auth can-i create pod
+yes
+
+controlplane ~ ➜  k auth can-i create pod --as=system:serviceaccount:default:k8s-developer
+yes 
+
+controlplane ~ ➜  k auth can-i create pod --as=jane
+no 
+```
+
+```bash
+controlplane ~ ➜ k auth can-i create pod --as=system:serviceaccount:default:k8s-developer --v=10
+```
+Output of the above commands shows the details foe the access.
+
+```
+I1119 19:06:33.006487   56442 loader.go:395] Config loaded from file:  /root/.kube/config
+I1119 19:06:33.007043   56442 cached_discovery.go:113] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/servergroups.json
+I1119 19:06:33.007254   56442 cached_discovery.go:77] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/flowcontrol.apiserver.k8s.io/v1beta3/serverresources.json
+I1119 19:06:33.007279   56442 cached_discovery.go:77] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/authentication.k8s.io/v1/serverresources.json
+I1119 19:06:33.007333   56442 cached_discovery.go:77] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/discovery.k8s.io/v1/serverresources.json
+I1119 19:06:33.007710   56442 cached_discovery.go:77] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/apiregistration.k8s.io/v1/serverresources.json
+I1119 19:06:33.007718   56442 cached_discovery.go:77] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/storage.k8s.io/v1/serverresources.json
+I1119 19:06:33.007776   56442 cached_discovery.go:77] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/coordination.k8s.io/v1/serverresources.json
+I1119 19:06:33.007776   56442 cached_discovery.go:77] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/policy/v1/serverresources.json
+I1119 19:06:33.007837   56442 cached_discovery.go:77] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/events.k8s.io/v1/serverresources.json
+I1119 19:06:33.007838   56442 cached_discovery.go:77] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/certificates.k8s.io/v1/serverresources.json
+I1119 19:06:33.007875   56442 cached_discovery.go:77] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/flowcontrol.apiserver.k8s.io/v1/serverresources.json
+I1119 19:06:33.007878   56442 cached_discovery.go:77] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/batch/v1/serverresources.json
+I1119 19:06:33.007339   56442 cached_discovery.go:77] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/apiextensions.k8s.io/v1/serverresources.json
+I1119 19:06:33.007915   56442 cached_discovery.go:77] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/autoscaling/v1/serverresources.json
+I1119 19:06:33.007332   56442 cached_discovery.go:77] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/node.k8s.io/v1/serverresources.json
+I1119 19:06:33.007919   56442 cached_discovery.go:77] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/admissionregistration.k8s.io/v1/serverresources.json
+I1119 19:06:33.008140   56442 cached_discovery.go:77] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/networking.k8s.io/v1/serverresources.json
+I1119 19:06:33.008234   56442 cached_discovery.go:77] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/rbac.authorization.k8s.io/v1/serverresources.json
+I1119 19:06:33.008268   56442 cached_discovery.go:77] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/scheduling.k8s.io/v1/serverresources.json
+I1119 19:06:33.008282   56442 cached_discovery.go:77] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/authorization.k8s.io/v1/serverresources.json
+I1119 19:06:33.008275   56442 cached_discovery.go:77] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/autoscaling/v2/serverresources.json
+I1119 19:06:33.008645   56442 cached_discovery.go:77] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/apps/v1/serverresources.json
+I1119 19:06:33.008745   56442 cached_discovery.go:77] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/v1/serverresources.json
+I1119 19:06:33.009006   56442 cached_discovery.go:113] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/servergroups.json
+I1119 19:06:33.009147   56442 cached_discovery.go:77] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/autoscaling/v2/serverresources.json
+I1119 19:06:33.009165   56442 cached_discovery.go:77] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/flowcontrol.apiserver.k8s.io/v1beta3/serverresources.json
+I1119 19:06:33.009196   56442 cached_discovery.go:77] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/authentication.k8s.io/v1/serverresources.json
+I1119 19:06:33.009243   56442 cached_discovery.go:77] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/node.k8s.io/v1/serverresources.json
+I1119 19:06:33.009245   56442 cached_discovery.go:77] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/authorization.k8s.io/v1/serverresources.json
+I1119 19:06:33.009248   56442 cached_discovery.go:77] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/events.k8s.io/v1/serverresources.json
+I1119 19:06:33.009267   56442 cached_discovery.go:77] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/coordination.k8s.io/v1/serverresources.json
+I1119 19:06:33.009273   56442 cached_discovery.go:77] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/storage.k8s.io/v1/serverresources.json
+I1119 19:06:33.009275   56442 cached_discovery.go:77] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/policy/v1/serverresources.json
+I1119 19:06:33.009293   56442 cached_discovery.go:77] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/apiregistration.k8s.io/v1/serverresources.json
+I1119 19:06:33.009302   56442 cached_discovery.go:77] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/apps/v1/serverresources.json
+I1119 19:06:33.009306   56442 cached_discovery.go:77] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/certificates.k8s.io/v1/serverresources.json
+I1119 19:06:33.009332   56442 cached_discovery.go:77] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/discovery.k8s.io/v1/serverresources.json
+I1119 19:06:33.009338   56442 cached_discovery.go:77] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/autoscaling/v1/serverresources.json
+I1119 19:06:33.009346   56442 cached_discovery.go:77] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/apiextensions.k8s.io/v1/serverresources.json
+I1119 19:06:33.009334   56442 cached_discovery.go:77] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/flowcontrol.apiserver.k8s.io/v1/serverresources.json
+I1119 19:06:33.009375   56442 cached_discovery.go:77] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/networking.k8s.io/v1/serverresources.json
+I1119 19:06:33.009382   56442 cached_discovery.go:77] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/admissionregistration.k8s.io/v1/serverresources.json
+I1119 19:06:33.009400   56442 cached_discovery.go:77] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/scheduling.k8s.io/v1/serverresources.json
+I1119 19:06:33.009413   56442 cached_discovery.go:77] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/rbac.authorization.k8s.io/v1/serverresources.json
+I1119 19:06:33.009418   56442 cached_discovery.go:77] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/batch/v1/serverresources.json
+I1119 19:06:33.009436   56442 cached_discovery.go:77] returning cached discovery info from /root/.kube/cache/discovery/controlplane_6443/v1/serverresources.json
+I1119 19:06:33.010194   56442 round_trippers.go:466] curl -v -XGET  -H "Accept: application/json, */*" -H "Impersonate-User: system:serviceaccount:default:k8s-developer" -H "User-Agent: kubectl/v1.31.0 (linux/amd64) kubernetes/9edcffc" 'https://controlplane:6443/api/v1'
+I1119 19:06:33.010563   56442 round_trippers.go:495] HTTP Trace: DNS Lookup for controlplane resolved to [{192.24.239.13 }]
+I1119 19:06:33.010745   56442 round_trippers.go:510] HTTP Trace: Dial to tcp:192.24.239.13:6443 succeed
+I1119 19:06:33.016496   56442 round_trippers.go:553] GET https://controlplane:6443/api/v1 200 OK in 6 milliseconds
+I1119 19:06:33.016512   56442 round_trippers.go:570] HTTP Statistics: DNSLookup 0 ms Dial 0 ms TLSHandshake 4 ms ServerProcessing 1 ms Duration 6 ms
+I1119 19:06:33.016517   56442 round_trippers.go:577] Response Headers:
+I1119 19:06:33.016530   56442 round_trippers.go:580]     X-Kubernetes-Pf-Flowschema-Uid: f42a019f-a8a3-4566-b6e7-f97a7c2bfec9
+I1119 19:06:33.016537   56442 round_trippers.go:580]     X-Kubernetes-Pf-Prioritylevel-Uid: 1ad36276-ea1a-4d25-b93a-3e3b59edf609
+I1119 19:06:33.016548   56442 round_trippers.go:580]     Date: Tue, 19 Nov 2024 19:06:33 GMT
+I1119 19:06:33.016555   56442 round_trippers.go:580]     Audit-Id: e69d9941-5a4c-47ad-bd84-59cb379f099b
+I1119 19:06:33.016558   56442 round_trippers.go:580]     Cache-Control: no-cache, private
+I1119 19:06:33.016561   56442 round_trippers.go:580]     Content-Type: application/json
+I1119 19:06:33.016722   56442 request.go:1351] Response Body: {"kind":"APIResourceList","groupVersion":"v1","resources":[{"name":"bindings","singularName":"binding","namespaced":true,"kind":"Binding","verbs":["create"]},{"name":"componentstatuses","singularName":"componentstatus","namespaced":false,"kind":"ComponentStatus","verbs":["get","list"],"shortNames":["cs"]},{"name":"configmaps","singularName":"configmap","namespaced":true,"kind":"ConfigMap","verbs":["create","delete","deletecollection","get","list","patch","update","watch"],"shortNames":["cm"],"storageVersionHash":"qFsyl6wFWjQ="},{"name":"endpoints","singularName":"endpoints","namespaced":true,"kind":"Endpoints","verbs":["create","delete","deletecollection","get","list","patch","update","watch"],"shortNames":["ep"],"storageVersionHash":"fWeeMqaN/OA="},{"name":"events","singularName":"event","namespaced":true,"kind":"Event","verbs":["create","delete","deletecollection","get","list","patch","update","watch"],"shortNames":["ev"],"storageVersionHash":"r2yiGXH7wu8="},{"name":"limitranges","singularName":"limitrange","namespaced":true,"kind":"LimitRange","verbs":["create","delete","deletecollection","get","list","patch","update","watch"],"shortNames":["limits"],"storageVersionHash":"EBKMFVe6cwo="},{"name":"namespaces","singularName":"namespace","namespaced":false,"kind":"Namespace","verbs":["create","delete","get","list","patch","update","watch"],"shortNames":["ns"],"storageVersionHash":"Q3oi5N2YM8M="},{"name":"namespaces/finalize","singularName":"","namespaced":false,"kind":"Namespace","verbs":["update"]},{"name":"namespaces/status","singularName":"","namespaced":false,"kind":"Namespace","verbs":["get","patch","update"]},{"name":"nodes","singularName":"node","namespaced":false,"kind":"Node","verbs":["create","delete","deletecollection","get","list","patch","update","watch"],"shortNames":["no"],"storageVersionHash":"XwShjMxG9Fs="},{"name":"nodes/proxy","singularName":"","namespaced":false,"kind":"NodeProxyOptions","verbs":["create","delete","get","patch","update"]},{"name":"nodes/status","singularName":"","namespaced":false,"kind":"Node","verbs":["get","patch","update"]},{"name":"persistentvolumeclaims","singularName":"persistentvolumeclaim","namespaced":true,"kind":"PersistentVolumeClaim","verbs":["create","delete","deletecollection","get","list","patch","update","watch"],"shortNames":["pvc"],"storageVersionHash":"QWTyNDq0dC4="},{"name":"persistentvolumeclaims/status","singularName":"","namespaced":true,"kind":"PersistentVolumeClaim","verbs":["get","patch","update"]},{"name":"persistentvolumes","singularName":"persistentvolume","namespaced":false,"kind":"PersistentVolume","verbs":["create","delete","deletecollection","get","list","patch","update","watch"],"shortNames":["pv"],"storageVersionHash":"HN/zwEC+JgM="},{"name":"persistentvolumes/status","singularName":"","namespaced":false,"kind":"PersistentVolume","verbs":["get","patch","update"]},{"name":"pods","singularName":"pod","namespaced":true,"kind":"Pod","verbs":["create","delete","deletecollection","get","list","patch","update","watch"],"shortNames":["po"],"categories":["all"],"storageVersionHash":"xPOwRZ+Yhw8="},{"name":"pods/attach","singularName":"","namespaced":true,"kind":"PodAttachOptions","verbs":["create","get"]},{"name":"pods/binding","singularName":"","namespaced":true,"kind":"Binding","verbs":["create"]},{"name":"pods/ephemeralcontainers","singularName":"","namespaced":true,"kind":"Pod","verbs":["get","patch","update"]},{"name":"pods/eviction","singularName":"","namespaced":true,"group":"policy","version":"v1","kind":"Eviction","verbs":["create"]},{"name":"pods/exec","singularName":"","namespaced":true,"kind":"PodExecOptions","verbs":["create","get"]},{"name":"pods/log","singularName":"","namespaced":true,"kind":"Pod","verbs":["get"]},{"name":"pods/portforward","singularName":"","namespaced":true,"kind":"PodPortForwardOptions","verbs":["create","get"]},{"name":"pods/proxy","singularName":"","namespaced":true,"kind":"PodProxyOptions","verbs":["create","delete","get","patch","update"]},{"name":"pods/status","singularName":"","namespaced":true,"kind":"Pod","verbs":["get","patch","update"]},{"name":"podtemplates","singularName":"podtemplate","namespaced":true,"kind":"PodTemplate","verbs":["create","delete","deletecollection","get","list","patch","update","watch"],"storageVersionHash":"LIXB2x4IFpk="},{"name":"replicationcontrollers","singularName":"replicationcontroller","namespaced":true,"kind":"ReplicationController","verbs":["create","delete","deletecollection","get","list","patch","update","watch"],"shortNames":["rc"],"categories":["all"],"storageVersionHash":"Jond2If31h0="},{"name":"replicationcontrollers/scale","singularName":"","namespaced":true,"group":"autoscaling","version":"v1","kind":"Scale","verbs":["get","patch","update"]},{"name":"replicationcontrollers/status","singularName":"","namespaced":true,"kind":"ReplicationController","verbs":["get","patch","update"]},{"name":"resourcequotas","singularName":"resourcequota","namespaced":true,"kind":"ResourceQuota","verbs":["create","delete","deletecollection","get","list","patch","update","watch"],"shortNames":["quota"],"storageVersionHash":"8uhSgffRX6w="},{"name":"resourcequotas/status","singularName":"","namespaced":true,"kind":"ResourceQuota","verbs":["get","patch","update"]},{"name":"secrets","singularName":"secret","namespaced":true,"kind":"Secret","verbs":["create","delete","deletecollection","get","list","patch","update","watch"],"storageVersionHash":"S6u1pOWzb84="},{"name":"serviceaccounts","singularName":"serviceaccount","namespaced":true,"kind":"ServiceAccount","verbs":["create","delete","deletecollection","get","list","patch","update","watch"],"shortNames":["sa"],"storageVersionHash":"pbx9ZvyFpBE="},{"name":"serviceaccounts/token","singularName":"","namespaced":true,"group":"authentication.k8s.io","version":"v1","kind":"TokenRequest","verbs":["create"]},{"name":"services","singularName":"service","namespaced":true,"kind":"Service","verbs":["create","delete","deletecollection","get","list","patch","update","watch"],"shortNames":["svc"],"categories":["all"],"storageVersionHash":"0/CO1lhkEBI="},{"name":"services/proxy","singularName":"","namespaced":true,"kind":"ServiceProxyOptions","verbs":["create","delete","get","patch","update"]},{"name":"services/status","singularName":"","namespaced":true,"kind":"Service","verbs":["get","patch","update"]}]}
+I1119 19:06:33.017759   56442 request.go:1351] Request Body: {"kind":"SelfSubjectAccessReview","apiVersion":"authorization.k8s.io/v1","metadata":{"creationTimestamp":null},"spec":{"resourceAttributes":{"namespace":"default","verb":"create","resource":"pods"}},"status":{"allowed":false}}
+I1119 19:06:33.017821   56442 round_trippers.go:466] curl -v -XPOST  -H "User-Agent: kubectl/v1.31.0 (linux/amd64) kubernetes/9edcffc" -H "Accept: application/json, */*" -H "Content-Type: application/json" -H "Impersonate-User: system:serviceaccount:default:k8s-developer" 'https://controlplane:6443/apis/authorization.k8s.io/v1/selfsubjectaccessreviews'
+I1119 19:06:33.019066   56442 round_trippers.go:553] POST https://controlplane:6443/apis/authorization.k8s.io/v1/selfsubjectaccessreviews 201 Created in 1 milliseconds
+I1119 19:06:33.019083   56442 round_trippers.go:570] HTTP Statistics: GetConnection 0 ms ServerProcessing 1 ms Duration 1 ms
+I1119 19:06:33.019088   56442 round_trippers.go:577] Response Headers:
+I1119 19:06:33.019097   56442 round_trippers.go:580]     X-Kubernetes-Pf-Prioritylevel-Uid: 1ad36276-ea1a-4d25-b93a-3e3b59edf609
+I1119 19:06:33.019104   56442 round_trippers.go:580]     Content-Length: 639
+I1119 19:06:33.019111   56442 round_trippers.go:580]     Date: Tue, 19 Nov 2024 19:06:33 GMT
+I1119 19:06:33.019118   56442 round_trippers.go:580]     Audit-Id: d6a06847-7a8b-4bb6-9185-772b6ee48f1e
+I1119 19:06:33.019125   56442 round_trippers.go:580]     Cache-Control: no-cache, private
+I1119 19:06:33.019131   56442 round_trippers.go:580]     Content-Type: application/json
+I1119 19:06:33.019134   56442 round_trippers.go:580]     X-Kubernetes-Pf-Flowschema-Uid: f42a019f-a8a3-4566-b6e7-f97a7c2bfec9
+I1119 19:06:33.019147   56442 request.go:1351] Response Body: {"kind":"SelfSubjectAccessReview","apiVersion":"authorization.k8s.io/v1","metadata":{"creationTimestamp":null,"managedFields":[{"manager":"kubectl","operation":"Update","apiVersion":"authorization.k8s.io/v1","time":"2024-11-19T19:06:33Z","fieldsType":"FieldsV1","fieldsV1":{"f:spec":{"f:resourceAttributes":{".":{},"f:namespace":{},"f:resource":{},"f:verb":{}}}}}]},"spec":{"resourceAttributes":{"namespace":"default","verb":"create","resource":"pods"}},"status":{"allowed":true,"reason":"RBAC: allowed by RoleBinding \"k8s-developer-sa-rolebinding/default\" of Role \"kubernetes-developer\" to ServiceAccount \"k8s-developer/default\""}}
+```
