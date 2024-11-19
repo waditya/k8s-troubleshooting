@@ -275,3 +275,39 @@ App is running on port 3000
 
 ## kubectl logs --timestamps 
 
+```shell
+controlplane ~ ➜  k logs -l app=notes-app
+```
+
+Output w/p timestamps look like below : 
+
+```
+> notes-app@1.0.0 start /app
+> node app.js
+
+App is running on port 3000
+
+> notes-app@1.0.0 start /app
+> node app.js
+
+App is running on port 3000
+```
+
+```shell
+controlplane ~ ➜  k logs -l app=notes-app --timestamps
+```
+
+Output with --timestamps option will display timestamp if they are not part of default log format 
+
+```
+2024-11-19T15:50:15.199914591Z 
+2024-11-19T15:50:15.199959074Z > notes-app@1.0.0 start /app
+2024-11-19T15:50:15.199964570Z > node app.js
+2024-11-19T15:50:15.199967347Z 
+2024-11-19T15:50:15.538089674Z App is running on port 3000
+2024-11-19T15:50:15.170309016Z 
+2024-11-19T15:50:15.170353961Z > notes-app@1.0.0 start /app
+2024-11-19T15:50:15.170367833Z > node app.js
+2024-11-19T15:50:15.170372285Z 
+2024-11-19T15:50:15.487163498Z App is running on port 3000
+```
