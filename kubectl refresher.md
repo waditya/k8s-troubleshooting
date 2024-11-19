@@ -399,3 +399,8 @@ controlplane ~ ➜  k logs log-generator --follow
 2024-11-19T17:09:06+0000 DEBUG This is a debug log that shows a log that can be ignored.
 2024-11-19T17:09:07+0000 INFO This is less important than debug log and is often used to provide context in the current task.
 ```
+
+## kubectl exec 
+
+This command is similar to docker exec. It allows to run a command inside a running container. 
+
