@@ -251,3 +251,24 @@ NAME                                    READY   STATUS    RESTARTS   AGE   LABEL
 notes-app-deployment-6486f64787-hb5s5   1/1     Running   0          10s   app=notes-app,pod-template-hash=6486f64787
 notes-app-deployment-6486f64787-t5tc9   1/1     Running   0          10s   app=notes-app,pod-template-hash=6486f64787
 ```
+
+To view logs spread across multiple pods and/or deployments on the basis of a common label,
+use below command. 
+
+```shell
+controlplane ~ ➜  k logs -l app=notes-app
+```
+
+Output will show logs for all containers with label app-notes-app 
+
+```
+> notes-app@1.0.0 start /app
+> node app.js
+
+App is running on port 3000
+
+> notes-app@1.0.0 start /app
+> node app.js
+
+App is running on port 3000
+```
