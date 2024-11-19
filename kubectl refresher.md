@@ -214,3 +214,40 @@ The output will look like below :
 2024/10/28 03:55:35 [notice] 1#1: start worker process 96
 2024/10/28 03:55:35 [notice] 1#1: start worker process 97
 ```
+
+## kubectl logs --labels 
+
+```shell
+controlplane ~ ➜  k create deployment notes-app-deployment --image=pavansa/notes-app -r=2
+```
+The output will look like below : 
+```
+deployment.apps/notes-app-deployment created
+```
+
+```shell
+controlplane ~ ➜  k edit deployments.apps notes-app-deployment 
+error: deployments.apps "notes-app-deployment" is invalid
+A copy of your changes has been stored to "/tmp/kubectl-edit-416172419.yaml"
+error: Edit cancelled, no valid changes were saved.
+```
+
+```shell
+controlplane ~ ✖ k replace --force -f /tmp/kubectl-edit-416172419.yaml
+```
+The output will look like below : 
+
+```
+deployment.apps "notes-app-deployment" deleted
+deployment.apps/notes-app-deployment replaced
+```
+
+```shell
+controlplane ~ ➜  k get pods --show-labels
+```
+
+```
+NAME                                    READY   STATUS    RESTARTS   AGE   LABELS
+notes-app-deployment-6486f64787-hb5s5   1/1     Running   0          10s   app=notes-app,pod-template-hash=6486f64787
+notes-app-deployment-6486f64787-t5tc9   1/1     Running   0          10s   app=notes-app,pod-template-hash=6486f64787
+```
