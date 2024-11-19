@@ -381,3 +381,8 @@ Logs for last 1 hour
 2024-11-19T17:29:05+0000 ERROR An error is usually an exception that has been caught and not handled.
 2024-11-19T17:29:06+0000 INFO This is less important than debug log and is often used to provide context in the current task.
 ```
+
+## kubectl logs --follow 
+
+This command is used to stream the logs on the UI in realtime. 
+
